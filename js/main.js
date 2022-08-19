@@ -1,37 +1,30 @@
-let myInput , myBtn ;
-
-myInput = document.querySelector('input');
-myBtn = document.querySelector('button')
-
-myInput.addEventListener('input',()=>{
-  // console.log(myInput.value.length);
-  if (myInput.value.length > 5) {
-    myBtn.style.opacity = 1 ;
-  } else {
-    myBtn.style.opacity = .5 ;
-  }
-})
 
 
+let myBtn = document.querySelector('.btn');
+console.log(myBtn.innerHTML);
 myBtn.addEventListener('click',()=>{
-  let myOl = document.querySelector('ol');
-  let myElement = document.createElement("li");
-  let myName = document.createTextNode(myInput.value);
-  let myI = document.createElement("i");
-  myI.setAttribute("class", "fa-solid fa-circle-minus")
-  // console.log(myI);
+  if (myBtn.innerHTML == 'Show Imgs') {
+    myBtn.innerHTML = 'Hide Imgs';
 
-  if (myInput.value.length > 5) {
-    myElement.appendChild(myName);
-    myElement.appendChild(myI)
-    myOl.appendChild(myElement);
-    myI.addEventListener("click",()=>{
-        myOl.removeChild(myElement)
-    })
-    myInput.value = '';
-    myBtn.style.opacity = .5 ;
-  } 
+      fetch('https://jsonplaceholder.typicode.com/photos')
+        .then( res => res.json())
+        .then( data =>{
+        // console.log(data.thumbnailUrl);
+        data.forEach(element => {
+        // console.log(element.thumbnailUrl);
+        let myRow = document.querySelector('.row')
+        let myDive = document.createElement('div');
+        myDive.setAttribute('class' , 'col-lg-3 col-md-6 col-sm-12 imgStyle text-center')
+        let myImg = document.createElement('img');
+        myImg.setAttribute('src' , element.thumbnailUrl);
+        myDive.appendChild(myImg);
+        myRow.appendChild(myDive)
 
-
-
+        });
+      })
+  }else {
+    myBtn.innerHTML = 'Show Imgs';
+    let myRow = document.querySelector('.row')
+    myRow.innerHTML = ''
+  }
 })
